@@ -1,6 +1,7 @@
 # zulu.wang Blog
+:revolving_hearts: [Live](https://zulu.wang)
 
-Powered by [vuepress](https://vuepress.vuejs.org) | [meteorlxy](https://github.com/meteorlxy/vuepress-theme-meteorlxy).
+:heart: [vuepress](https://vuepress.vuejs.org) | [meteorlxy](https://github.com/meteorlxy/vuepress-theme-meteorlxy).
 
 ## 开始使用
 
