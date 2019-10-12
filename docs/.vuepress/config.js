@@ -2,10 +2,10 @@
 
 module.exports = {
     // 网站 Title
-    title: 'My Blog',
+    title: 'zulu.wang',
   
     // 网站描述
-    description: 'This is my blog',
+    description: 'blog',
   
     // 网站语言
     locales: {
@@ -25,7 +25,7 @@ module.exports = {
       // 个人信息（没有或不想设置的，删掉对应字段即可）
       personalInfo: {
         // 昵称
-        nickname: 'meteorlxy',
+        nickname: 'oolongd',
   
         // 个人简介 (支持 HTML)
         description: 'Happy Coding<br/>Happy Life',
@@ -34,14 +34,14 @@ module.exports = {
         email: 'oolongdo@gmail.com',
   
         // 所在地
-        location: 'Xi\'an City, China',
+        location: 'Nanjing City, China',
   
         // 组织
-        organization: 'Xi\'an Jiao Tong University',
+        organization: 'Nanjing',
   
         // 头像
         // 设置为外部链接
-        avatar: 'https://www.meteorlxy.cn/assets/img/avatar.jpg',
+        avatar: '/img/avatar.jpeg',
         // 或者放置在 .vuepress/public 文件夹，例如 .vuepress/public/img/avatar.jpg
         // avatar: '/img/avatar.jpg',
         
