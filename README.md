@@ -1,4 +1,6 @@
 # zulu.wang Blog
+[![Build Status](https://travis-ci.org/oolongd/zulu.wang.svg?branch=master)](https://travis-ci.org/oolongd/zulu.wang)
+
 :revolving_hearts: [Live](https://zulu.wang)
 
 :heart: [vuepress](https://vuepress.vuejs.org) | [meteorlxy](https://github.com/meteorlxy/vuepress-theme-meteorlxy).
