@@ -158,7 +158,7 @@ module.exports = {
         poweredByTheme: true,
   
         // 添加自定义 footer (支持 HTML)
-        custom: 'Copyright 2018-present <a href="https://github.com/meteorlxy" target="_blank">meteorlxy</a> | MIT License',
+        custom: 'Copyright 2019-present Wang Zulu | <a href="http://www.beian.miit.gov.cn/" target="_blank">苏ICP备14058772号-2</a> | <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank">CC BY-NC 4.0</a>',
       },
   
       // 个人信息卡片相关设置 (可选)
