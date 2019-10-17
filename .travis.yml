@@ -17,7 +17,7 @@ install:
   - yarn install
 
 script:
-  - npm run docs:build
+  - yarn docs:build
 
 after_success:
 - ./ossutil64 cp -rf docs/.vuepress/dist oss://zulu-wang
