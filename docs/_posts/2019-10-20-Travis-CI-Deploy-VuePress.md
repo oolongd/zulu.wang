@@ -20,15 +20,15 @@ vssue-title: Travis CI Deploy VuePress
 
 ## 一、准备
 
-### 1. OSS
+### 1.1 OSS
 * 已完成自有域名的注册
 * 已完成域名备案
 * 已创建公共读的Bucket
 
-### 2. Travis CI
+### 1.2 Travis CI
 * GitHub 账号
 
-### 3. VuePress
+### 1.3 VuePress
 
 ## 二、流程
 
