@@ -74,24 +74,33 @@ yarn docs:build
 
 ### 3.2 配置 Bucket
 进入`控制台` - `对象储存 OSS` - `创建 Bucket`，填写名称，选择区域，储存类型选择标准储存，读写权限选择公共读：
+
 ![](https://public.zulu.wang/img/20191022165604.png)
+
 左侧存储空间列表中，单击目标存储空间。 依次进入`基础设置` - `静态页面`，设置`默认首页`和`默认404页`
+
 ![](https://public.zulu.wang/img/20191022171505.png)
+
 依次进入`域名管理` - `绑定用户域名`
 
 > 中国大陆地区需将域名[备案](https://beian.aliyun.com/order/selfBaIndex.htm)后才可以绑定到Bucket上
 
 ![](https://public.zulu.wang/img/20191022172401.png)
+
 具体步骤参考 [绑定自定义域名](https://help.aliyun.com/document_detail/31902.html)
 
 ### 3.3 配置 Travis CI
 新建 GitHub 项目，并启用 Travis CI。Travis CI 相关操作可参考这篇博客[持续集成服务 Travis CI](https://zulu.wang/posts/2019/10/18/travis-ci.html)
 GitHub 账号登录 [Travis CI](https://travis-ci.org/)，确认接受访问 GitHub 的权限。
 登录之后，Travis CI 就会同步你 GitHub 账号的仓库。然后打开[账户页面](https://travis-ci.org/account/repositories)并给你想要构建的项目启用 Travis-CI。
+
 ![](https://public.zulu.wang/img/20191018135503.png)
+
 设置项目构建时所需的环境变量，用于配置阿里云 OSS 工具 `ossutil64` 
 进入`Travis-CI` - 选择对应项目 - `More options` - `Setting` - `Environment Variables`，
+
 ![](https://public.zulu.wang/img/20191022174759.png)
+
 在 3.1 所建目录的根目录下添加 ```.travis.yml``` 文件，内容如下
 ```yaml
 language: node_js
