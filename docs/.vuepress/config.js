@@ -203,4 +203,12 @@ module.exports = {
         posts: true,
       },
     },
+    plugins: [
+      [
+        '@vuepress/google-analytics',
+        {
+          'ga': 'UA-150668204-1'
+        }
+      ]
+    ]
   }
