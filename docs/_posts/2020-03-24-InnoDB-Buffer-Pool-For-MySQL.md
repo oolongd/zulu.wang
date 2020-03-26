@@ -1,5 +1,4 @@
 ---
-draft: true
 category: MySQL
 tags:
   - MySQL
@@ -136,14 +135,20 @@ LRU是Least Recently Used的缩写，即最近最少使用，是一种常用的�
 
 ![20200326190531](https://public.zulu.wang/img/20200326190531.png)
 
+只有在老生代呆的时间足够久，停留时间大于T，才会被插入新生代头部。
 
+![20200326222304](https://public.zulu.wang/img/20200326222304.png)
+
+老生代的停留时间由参数 `innodb_old_blocks_time` 控制，单位为毫秒，默认是1000
 
 ### FLU List
 这个链表中的所有节点都是脏页，也就是说这些数据页都被修改过，但是还没来得及被刷新到磁盘上。在FLU List上的页面一定在LRU List上，但是反之则不成立。一个数据页可能会在不同的时刻被修改多次，在数据页上记录了最老(也就是第一次)的一次修改的lsn，即oldest_modification。不同数据页有不同的oldest_modification，FLU List中的节点按照oldest_modification排序，链表尾是最小的，也就是最早被修改的数据页，当需要从FLU List中淘汰页面时候，从链表尾部开始淘汰。加入FLU List，需要使用flush_list_mutex保护，所以能保证FLU List中节点的顺序。
 
-
-
-
+## 总结
+1. 缓冲池(buffer pool)是一种常见的降低磁盘访问的机制
+2. 缓冲池以数据页(page)为单位缓存数据
+3. 缓冲池的常见管理算法是 LRU
+4. InnoDB 对普通 LRU 进行了优化，将缓冲池分为老生代和新生代，入缓冲池的页，优先进入老生代，页被访问，才进入新生代，以解决预读失效的问题。同时采用老生代停留时间窗口机制，当数据页被访问且在老生代停留时间超过配置阈值的，才进入新生代，以解决批量数据访问，大量热数据淘汰的问题
 
 ## 参考
 1. [CMySQL · 引擎特性 · InnoDB Buffer Pool](hhttp://mysql.taobao.org/monthly/2017/05/01/)
