@@ -1,13 +1,11 @@
 {
-  "devDependencies": {
-    "@vuepress/plugin-google-analytics": "^1.2.0",
-    "vuepress": "^1.1.0"
-  },
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
-    "vuepress-theme-meteorlxy": "^1.5.0"
+    "vuepress": "^1.2.0",
+    "vuepress-theme-meteorlxy": "^1.6.0",
+    "@vuepress/plugin-google-analytics": "^1.2.0"
   }
 }
