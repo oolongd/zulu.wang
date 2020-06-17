@@ -1,5 +1,4 @@
 ---
-draft: true
 category: Spring Boot
 tags:
   - Spring Boot
@@ -97,8 +96,42 @@ SuccessExitStatus=143
 WantedBy=multi-user.target
 ```
 单元文件的语法可以参考 [systemd.unit](https://www.freedesktop.org/software/systemd/man/systemd.unit.html)
-##
 
+重新载入 systemd 系统配置，扫描单元文件的变动。
+```bash
+systemctl daemon-reload
+```
+
+## 运行
+
+### 启动应用
+
+```bash
+sudo systemctl start spring
+```
+
+### 停止应用
+
+```bash
+sudo systemctl stop spring
+```
+
+### 应用运行状态
+
+```bash
+sudo systemctl status spring
+```
+
+### 其它
+
+```bash
+# 开机自启动
+sudo systemctl enable spring
+# 取消开机自启动
+sudo systemctl enable spring
+# 检测应用是否为开机自启动
+sudo systemctl is-enabled spring
+```
 
 ## 参考
 * [Systemd](https://wiki.archlinux.org/index.php/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))
