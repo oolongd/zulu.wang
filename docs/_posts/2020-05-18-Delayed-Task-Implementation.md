@@ -1,6 +1,6 @@
 ---
 draft: true
-category: security
+category: algorithm
 tags:
   - algorithm
   - netty
@@ -8,7 +8,7 @@ date: 2020-05-18
 title: 延迟任务的实现
 vssue-title: Delayed Task Implementation
 ---
-## 一、缘起
+## 缘起
 在需求开发过程中，我么经常会遇到“某一段时间之后，执行某一个任务的需有”的需求。如：
 1. 京东商城下单后未支付，24小时后，自动取消订单并释放库存
 2. 外卖订单超过15分钟未支付，自动取消
@@ -20,9 +20,9 @@ vssue-title: Delayed Task Implementation
 3. 时效性不够好，如果每小时轮询一次，最差的情况下，时间误差会达到1小时
 4. 如果通过增加cron轮询频率来减少（3）中的时间误差，（1）中轮询低效和（2）中重复计算的问题会进一步凸显
 
-## 二、高效延时消息设计与实现
+## 高效延时消息设计与实现
 
-### 2.1 时间轮算法实现
+### 时间轮算法实现
 包含两个重要的数据结构：
 * 环形队列，例如可以创建一个包含 n 个 bucket 的环形队列（本质是个数组）
 * 任务集合，环上每一个 bucket 是一个 Set<Task>
@@ -107,74 +107,84 @@ zadd key 1589807086 1
 ```
 
 
-
-
 相关代码实现如下：
 
 ```java
 package wang.zulu.delay;
 
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class TestRedisDelay {
+public class RedisTest {
     public static void main(String[] args) {
-        TaskProducer taskProducer = new TaskProducer();
-        //创建 3个任务，并设置超时间为 10s 5s 20s
-        taskProducer.produce(1, System.currentTimeMillis() + 10000);
-        taskProducer.produce(2, System.currentTimeMillis() + 5000);
-        taskProducer.produce(3, System.currentTimeMillis() + 20000);
+        DelayQueue delayQueue = new DelayQueue();
+        //加入三个任务，依次设置超时时间是 10s 5s 20s
+        delayQueue.produce(1, System.currentTimeMillis() + 10000);
+        delayQueue.produce(2, System.currentTimeMillis() + 5000);
+        delayQueue.produce(3, System.currentTimeMillis() + 20000);
         System.out.println("等待任务执行===========");
-        //消费端从redis中消费任务
-        TaskConsumer taskConsumer = new TaskConsumer();
-        taskConsumer.consumer();
+        delayQueue.consumer();
     }
 }
-class TaskProducer {
+
+
+class DelayQueue {
+    private final JedisPool pool;
+    private final String redisKey = "daily-queue";
+
+    DelayQueue() {
+        pool = new JedisPool(new JedisPoolConfig(),
+                "10.10.10.211", 6379, 2000, "zeaho123", 5);
+    }
+
     public void produce(Integer taskId, long exeTime) {
-        System.out.println("加入任务， taskId: " + taskId + ", exeTime: " + exeTime + ", 当前时间：" + LocalDateTime.now());
-        RedisOps.getJedis().zadd(RedisOps.key, exeTime, String.valueOf(taskId));
+        try (Jedis jedis = pool.getResource()) {
+            System.out.println("加入一个任务， ID = " + taskId + ", exeTime: " + exeTime + ", 当前时间：" + LocalDateTime.now());
+            jedis.zadd(redisKey, exeTime, String.valueOf(taskId));
+        }
     }
-}
-class TaskConsumer {
+
     public void consumer() {
-        Executors.newSingleThreadExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    Set<String> taskIdSet = RedisOps.getJedis().zrangeByScore(RedisOps.key, 0, System.currentTimeMillis(), 0, 1);
-                    if (taskIdSet == null || taskIdSet.isEmpty()) {
-                        //System.out.println("没有任务");
-                    } else {
-                        taskIdSet.forEach(id -> {
-                            long result = RedisOps.getJedis().zrem(RedisOps.key, id);
-                            if (result == 1L) {
-                                System.out.println("从延时队列中获取到任务，taskId:" + id + " , 当前时间：" + LocalDateTime.now());
-                            }
-                        });
-                    }
+        while (!Thread.interrupted()) {
+            try (Jedis jedis = pool.getResource()) {
+                Set<String> zrange = jedis.zrangeByScore(redisKey, 0, System.currentTimeMillis(), 0, 1);
+                if (zrange.isEmpty()) {
+                    //如果消息是空的，则休息 500 毫秒然后继续
                     try {
                         TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    continue;
+                }
+                String next = zrange.iterator().next();
+                if (jedis.zrem(redisKey, next) > 0) {
+                    System.out.println("从延时队列中获取到任务，taskId:" + next + " , 当前时间：" + LocalDateTime.now());
                 }
             }
-        });
+
+        }
     }
+
 }
+
+
 
 ```
 
 相比时间轮的实现方式，使用 Redis 可以将数据持久化到磁盘，规避了数据丢失的风险，并且支持分布式，避免了单点故障。
 
-### 2.3 思考
+### 思考
 基于 Redis 的实现方式在分布式的部署过程中，极端情况下是否会出现同一个任务被执行对此的情况？
 
 
 ## 参考
-1. [延时任务的几种实现方式](https://xie.infoq.cn/article/857cea9c7e0a05a483a8d5c96)
-2. [netty源码解读之时间轮算法实现-HashedWheelTimer](https://zacard.net/2016/12/02/netty-hashedwheeltimer/)
-3. [1分钟实现“延迟消息”功能](https://cloud.tencent.com/developer/article/1048667)
+* [延时任务的几种实现方式](https://xie.infoq.cn/article/857cea9c7e0a05a483a8d5c96)
+* [netty源码解读之时间轮算法实现-HashedWheelTimer](https://zacard.net/2016/12/02/netty-hashedwheeltimer/)
+* [1分钟实现“延迟消息”功能](https://cloud.tencent.com/developer/article/1048667)
