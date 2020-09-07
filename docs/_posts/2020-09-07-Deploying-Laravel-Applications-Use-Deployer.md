@@ -5,7 +5,7 @@ tags:
   - laravel
   - deployment
 date: 2020-09-07
-title: 使用 deployer 部署 laravel 应用
+title: 使用 Deployer 部署 Laravel 应用
 vssue-title: Deploying Laravel Applications Use Deployer
 ---
 
