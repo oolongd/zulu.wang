@@ -3,10 +3,11 @@ category: algorithm
 tags:
   - php
   - algorithm
-date: 2020-09-07
+date: 2020-09-08
 title: 轨迹抽稀之道格拉斯-普克算法
 vssue-title: PHP implementation of the Ramer Douglas Peucker Algorithm
 ---
+## 缘起
 
 最近项目涉及到车辆轨迹展示，由于车辆上传轨迹点到频率为每5秒为一个点，有时活跃车辆一天到轨迹点有1万之多，不仅接口返回数据慢，同时前端页面渲染的速度也受到了影响。所以需要一个算法来对轨迹点进行压缩。
 
@@ -15,6 +16,10 @@ vssue-title: PHP implementation of the Ramer Douglas Peucker Algorithm
 道格拉斯-普克算法就是其中的一种实现算法。
 
 > 道格拉斯-普克算法(Douglas–Peucker algorithm，亦称为拉默-道格拉斯-普克算法、迭代适应点算法、分裂与合并算法)是将曲线近似表示为一系列点，并减少点的数量的一种算法。该算法的原始类型分别由乌尔斯·拉默（Urs Ramer）于1972年以及大卫·道格拉斯（David Douglas）和托马斯·普克（Thomas Peucker）于1973年提出，并在之后的数十年中由其他学者予以完善。
+
+## 实现
+
+### 算法逻辑
 
 算法的具体实现逻辑如下：
 
@@ -26,7 +31,7 @@ vssue-title: PHP implementation of the Ramer Douglas Peucker Algorithm
 
 ![Douglas–Peucker](https://public.zulu.wang/img/20200908180657.gif)
 
-## 代码实现
+### 相关代码
 
 ```php
 class DouglasPeucker
