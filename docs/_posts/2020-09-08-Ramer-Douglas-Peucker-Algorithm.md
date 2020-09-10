@@ -99,7 +99,7 @@ class DouglasPeucker
 
 以下是在百度地图上绘制轨迹的相关代码，ak 为百度地图开发平台申请的密钥，请自行替换
 
-```javascirpt
+```javascript
 <!DOCTYPE html>
 <html>
 <head>
