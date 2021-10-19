@@ -29,5 +29,3 @@ jobs:
           ./ossutil64 config -e $ENDPOINT -i $ACCESS_KEY_ID -k $ACCESS_KEY_SECRET
       - name: Deploy pages
         run: ./ossutil64 cp -rf docs/.vuepress/dist oss://zulu-wang
-      
-
