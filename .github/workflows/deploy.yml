@@ -23,6 +23,10 @@ jobs:
       - name: Build pages
         run: yarn docs:build
       - name: Install ossutil
+        env: 
+          ENDPOINT: ${{ secrets.ENDPOINT }}
+          ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          ACCESS_KEY_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
         run: |
           curl -LO http://gosspublic.alicdn.com/ossutil/1.7.7/ossutil64
           chmod +x ossutil64
