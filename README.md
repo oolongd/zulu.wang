@@ -1,5 +1,5 @@
 # zulu.wang Blog
-[![Build Status](https://travis-ci.org/oolongd/zulu.wang.svg?branch=master)](https://travis-ci.org/oolongd/zulu.wang)
+![Build Status](https://github.com/oolongd/zulu.wang/actions/workflows/deploy.yml/badge.svg)
 
 :revolving_hearts: [Live](https://zulu.wang)
 

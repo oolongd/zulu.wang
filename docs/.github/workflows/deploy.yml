@@ -1,0 +1,33 @@
+name: Hexo Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '15.x'
+        cache: 'yarn'
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Build pages
+        run: yarn docs:build
+      - name: Install ossutil
+        run: |
+          curl -LO http://gosspublic.alicdn.com/ossutil/1.7.7/ossutil64
+          chmod +x ossutil64
+          ./ossutil64 config -e $ENDPOINT -i $ACCESS_KEY_ID -k $ACCESS_KEY_SECRET
+      - name: Deploy pages
+        run: ./ossutil64 cp -rf docs/.vuepress/dist oss://zulu-wang
+      
+
