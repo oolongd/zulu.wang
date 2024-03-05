@@ -2,7 +2,7 @@
 
 module.exports = {
     // 网站 Title
-    title: 'zulu.wang',
+    title: '码田匠心',
   
     // 网站描述
     description: 'blog',
